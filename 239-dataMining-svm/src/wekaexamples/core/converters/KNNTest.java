@@ -1,6 +1,7 @@
 package wekaexamples.core.converters;
 
-import weka.classifiers.functions.LibSVM;
+import weka.classifiers.Classifier;
+import weka.classifiers.lazy.IBk;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
@@ -12,12 +13,12 @@ import java.io.File;
  * @author FracPete (fracpete at waikato dot ac dot nz)
  * @version $Revision$
  */
-public class SVMTest {
+public class KNNTest {
 
-	private static final String TESTING_DATASET = "spambase_testing_1_1.arff";
-	private static final String TRAINING_DATASET = "spambase_training_1_1.arff";
-	private static final String DATA_DIR_PATH = "C:\\Users\\renis\\Desktop\\SJSU\\239\\Project_SVM\\data\\";
-	private LibSVM svm;
+	private static final String TESTING_DATASET = "spambase_testing_1_1-KNN.arff";
+	private static final String TRAINING_DATASET = "spambase_training_1_1-KNN.arff";
+	private static final String DATA_DIR_PATH = "C:\\Users\\Ax\\Desktop\\KNNDatasets\\";
+	private IBk knn;
 	private ArffLoader arffLoader;
 
 	public static void main(String[] args) throws Exception {
@@ -34,16 +35,18 @@ public class SVMTest {
 		// CSVLoader loader = new CSVLoader();
 		// //loader.setSource(new File(args[0]));
 		// loader.setSource(new File(source));
-		SVMTest svmTest=new SVMTest();
+		KNNTest svmTest=new KNNTest();
 		svmTest.testDataSet(TESTING_DATASET, svmTest.trainDataSet(TRAINING_DATASET));
 	}
 
-	public void testDataSet(String fileName, LibSVM svm) {
+	public void testDataSet(String fileName, IBk knn) {
 
 		try {
 			String sourceSpamBaseArff = DATA_DIR_PATH + fileName;
 			arffLoader = new ArffLoader();
 			arffLoader.setSource(new File(sourceSpamBaseArff));
+			
+			Classifier knnibk;
 
 			Instances instances = arffLoader.getDataSet();
 			instances.setClassIndex(instances.numAttributes() - 1);
@@ -51,13 +54,17 @@ public class SVMTest {
 			System.out.println("\n\n" + instances);
 
 			Instance firstInstance = instances.firstInstance();
-
-			double d1 = svm.classifyInstance(firstInstance);
+			knn.classifyInstance(firstInstance);
+			double d1 = knn.classifyInstance(firstInstance);
 			System.out.println("Result:" + d1);
+			
+			knnibk=new IBk(5);
 
 			Instance lastInstance = instances.lastInstance();
-			d1 = svm.classifyInstance(lastInstance);
+			d1 = knn.classifyInstance(lastInstance);
 			System.out.println("Result:" + d1);
+			
+			
 
 		} catch (Exception e) {
 			System.out.println("Exception:" + e);
@@ -65,7 +72,7 @@ public class SVMTest {
 
 	}
 
-	public LibSVM trainDataSet(String fileName) {
+	public IBk trainDataSet(String fileName) {
 		try {
 			String sourceSpamBaseArff = DATA_DIR_PATH + fileName;
 			ArffLoader arffLoader = new ArffLoader();
@@ -76,15 +83,15 @@ public class SVMTest {
 
 			//System.out.println("\n\n" + instances);
 
-			svm = new LibSVM();
-			svm.buildClassifier(instances);
+			knn = new IBk();
+			knn.buildClassifier(instances);
 			
 			System.out.println("\n===Classifier is built===");
 
 		} catch (Exception e) {
 			System.out.println("Exception :" + e);
 		}
-		return svm;
+		return knn;
 	}
 
 }

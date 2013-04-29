@@ -5,10 +5,7 @@ package com.ren.test;
 
 import java.io.File;
 
-import libsvm.svm;
-import libsvm.svm_model;
-import libsvm.svm_problem;
-import weka.classifiers.functions.LibSVM;
+
 import weka.core.Instances;
 import weka.core.converters.TextDirectoryLoader;
 import weka.filters.Filter;
@@ -30,7 +27,7 @@ public class TestSVM {
 			
 			TextDirectoryLoader loader = new TextDirectoryLoader();
 			loader.setDirectory(new File(
-					"C:\\Users\\renis\\Desktop\\SJSU\\239\\Project_SVM\\data"));
+					"C:\\Users\\Ax\\Desktop\\KNNDatasets\\data"));
 			Instances dataRaw = loader.getDataSet();
 			// System.out.println("\n\nImported data:\n\n" + dataRaw);
 
