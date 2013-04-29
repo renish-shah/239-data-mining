@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/libsvm.jar"/>
-	<classpathentry kind="lib" path="/Masters_Project/lib/weka.jar"/>
-	<classpathentry kind="lib" path="lib/hadoop-0.20.1-core.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Weka-3-7/weka.jar"/>
+	<classpathentry kind="lib" path="src/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="src/hadoop-0.20.1-core.jar"/>
+	<classpathentry kind="lib" path="src/libsvm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
