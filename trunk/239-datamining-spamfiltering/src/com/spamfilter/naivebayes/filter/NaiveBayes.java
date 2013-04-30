@@ -2,6 +2,8 @@ package com.spamfilter.naivebayes.filter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.spamfilter.naivebayes.file.ReadFile;
 
@@ -14,17 +16,16 @@ public class NaiveBayes {
 
 	int spamCount = 0;
 	int nonSpamCount = 0;
-	
-	public static void main(String[] args)
-	{
-		new NaiveBayes().checkNaiveBayes();
+
+	public static void main(String[] args) {
+		new NaiveBayes().checkNaiveBayes("nonspam");
 	}
 
-	public void checkNaiveBayes() {
+	public List<String> checkNaiveBayes(String dataset) {
 
 		try {
-			double startTime=System.currentTimeMillis();
-			
+			double startTime = System.currentTimeMillis();
+
 			EmailSpamFilter emailfilter = new EmailSpamFilter();
 
 			// File containing spam emails for training
@@ -34,8 +35,15 @@ public class NaiveBayes {
 			emailfilter.authenticEmailTraining(DATA_NON_SPAM_TXT);
 			// Method for completing training
 			emailfilter.training();
-
-			File folder = new File(DATA_SPAM_TEST);
+			File folder = null;
+			if(dataset.equals("spam"))
+			{
+				folder = new File(DATA_SPAM_TEST);
+			}
+			else if(dataset.equals("nonspam"))
+			{
+				folder = new File(DATA_NONSPAM_TEST);
+			}
 			File[] listOfFiles = null;
 			listOfFiles = folder.listFiles();
 
@@ -61,16 +69,30 @@ public class NaiveBayes {
 					System.out.println("Bingo!!! It's an authentic email.");
 				}
 			}
-			System.out.println("=== Naive Bayes Result ===");
-			System.out.println("Time taken:"+(System.currentTimeMillis()-startTime)+" ms");
-			System.out.println("Spam Count:" + spamCount);
-			System.out.println("Non-Spam Count:" + nonSpamCount);
-			System.out.println("Accuracy:"+((spamCount*100)/(spamCount+nonSpamCount))+"%");
-			
+
+			List<String> results = new ArrayList<String>();
+
+			results.add("=== Naive Bayes Result ===");
+			results.add("Time taken:"
+					+ (System.currentTimeMillis() - startTime) + " ms");
+			results.add("Spam Count:" + spamCount);
+			results.add("Non-Spam Count:" + nonSpamCount);
+			if(dataset.equals("spam"))
+			{
+			results.add("Accuracy:"
+					+ ((spamCount * 100) / (spamCount + nonSpamCount)) + "%");
+			}
+			else
+			{
+				results.add("Accuracy:"
+						+ ((nonSpamCount * 100) / (spamCount + nonSpamCount)) + "%");
+			}
+			return results;
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 }

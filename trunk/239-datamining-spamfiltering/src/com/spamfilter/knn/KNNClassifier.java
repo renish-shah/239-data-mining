@@ -12,15 +12,30 @@ import com.spamfilter.svm.SVMEngine;
 
 public class KNNClassifier {
 
-	public List<String> runKnn(String dataDirectory, String fileName) {
+	public List<String> runKnn(String dataDirectory, String fileName,
+			boolean isSpam) {
 		DataSource source;
 		DataSource test;
 		try {
-			double startTime=System.currentTimeMillis();
-			source = new DataSource(SVMEngine.PROJECT_SVM_DATA_DIRECTORY
-					+ SVMEngine.TRAIN_SPAM_DATASET + "_"+SVMEngine.fileCounter+".arff");
-			test = new DataSource(SVMEngine.PROJECT_SVM_DATA_DIRECTORY
-					+ SVMEngine.TEST_SPAM_DATASET + "_"+SVMEngine.fileCounter+".arff");
+			double startTime = System.currentTimeMillis();
+
+			if (isSpam) {
+				source = new DataSource(SVMEngine.PROJECT_SVM_DATA_DIRECTORY
+						+ SVMEngine.TRAIN_SPAM_DATASET + "_"
+						+ SVMEngine.fileCounter + ".arff");
+				test = new DataSource(SVMEngine.PROJECT_SVM_DATA_DIRECTORY
+						+ SVMEngine.TEST_SPAM_DATASET + "_"
+						+ SVMEngine.fileCounter + ".arff");
+
+			} else {
+				source = new DataSource(SVMEngine.PROJECT_SVM_DATA_DIRECTORY
+						+ SVMEngine.TRAIN_NONSPAM_DATASET + "_"
+						+ SVMEngine.fileCounter + ".arff");
+				test = new DataSource(SVMEngine.PROJECT_SVM_DATA_DIRECTORY
+						+ SVMEngine.TEST_NONSPAM_DATASET + "_"
+						+ SVMEngine.fileCounter + ".arff");
+
+			}
 			Instances sourceInstances = source.getDataSet();
 			Instances testInstances = test.getDataSet();
 			// setting class attribute if the data format does not provide this
@@ -43,7 +58,7 @@ public class KNNClassifier {
 			evaluation.evaluateModel(knn, testInstances);
 
 			System.out.println(evaluation.toSummaryString());
-//			System.out.println(evaluation.toMatrixString());
+			// System.out.println(evaluation.toMatrixString());
 
 			List<String> values = new ArrayList<String>();
 			values.add("=== RESULTS FOR KNN ===");
@@ -54,7 +69,8 @@ public class KNNClassifier {
 					+ evaluation.incorrect());
 			values.add("Incorrectly Classified Instances(%):"
 					+ evaluation.pctIncorrect());
-			values.add("Total Time taken to classify:"+(System.currentTimeMillis()-startTime)+" ms");
+			values.add("Total Time taken to classify:"
+					+ (System.currentTimeMillis() - startTime) + " ms");
 
 			return values;
 
@@ -67,7 +83,7 @@ public class KNNClassifier {
 	}
 
 	public static void main(String[] args) {
-		new KNNClassifier().runKnn(null,null);
+		new KNNClassifier().runKnn(null, null, true);
 	}
 
 }
