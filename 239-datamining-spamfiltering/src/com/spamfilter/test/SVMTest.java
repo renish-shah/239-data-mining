@@ -10,6 +10,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author RENISH
+ * 
+ */
+
 public class SVMTest {
 
 	private static final String TESTING_DATASET = "TRAIN_SPAM_RENISH.arff";
