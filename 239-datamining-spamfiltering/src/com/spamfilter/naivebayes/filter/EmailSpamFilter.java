@@ -23,9 +23,9 @@ public class EmailSpamFilter {
 	}
 
 	// Spam email training. The training file contains 350 spam emails.
-	public void spamEmailTraining(String file) throws IOException {
-		ReadFile readfile = new ReadFile(file);
-
+	public void spamEmailTraining(String filePath) throws IOException {
+		ReadFile readfile = new ReadFile(filePath);
+		
 		// Break data into wordlist
 		String data = readfile.getContent();
 		String[] tokens = data.split(wordsplitregex);
