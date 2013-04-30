@@ -29,7 +29,7 @@ public class ArffFileUtility {
 
 	//private String filePath = "C:\\Users\\renis\\Desktop\\SJSU\\239\\Project_SVM\\data\\";
 
-	public static void createContentForFile(String filePath, String fileName) {
+	public static void createContentForTrainingFile(String filePath, String fileName) {
 		StringBuilder content1 = new StringBuilder();
 		HashMap<String, List<HashMap<String, Word>>> globalMapNext = WordFrequencyCounter_1.globalMapNextTraining;
 		HashMap<String, String> globalHeader = WordFrequencyCounter_1.globalHeaderTraining;
@@ -98,6 +98,78 @@ public class ArffFileUtility {
 			System.out.println("ERROR");
 
 	}
+	
+	
+	public static void createContentForTestingFile(String filePath, String fileName) {
+		StringBuilder content1 = new StringBuilder();
+		HashMap<String, List<HashMap<String, Word>>> globalMapNextTesting = WordFrequencyCounter_1.globalMapNextTesting;
+		HashMap<String, String> globalHeaderTraining = WordFrequencyCounter_1.globalHeaderTraining;
+		HashMap<String, String> globalHeaderTesting = WordFrequencyCounter_1.globalHeaderTesting;
+		// globalMap.
+
+		content1.append("@relation svm_testing");
+		content1.append("\n\n");
+		String[] attributeValues = globalHeaderTraining.values().toArray(
+				new String[globalHeaderTraining.size()]);
+
+		for (int i = 0; i < attributeValues.length; i++) {
+			content1.append("\n@attribute word_freq_" + attributeValues[i]
+					+ " numeric");
+		}
+
+		content1.append("\n@attribute is_spam {0,1}");
+		content1.append("\n\n@data");
+		content1.append("\n");
+
+		writeToArffFile(filePath, fileName, content1);
+		content1 = null;
+		content1 = new StringBuilder();
+
+		System.out.println("Done");
+
+		System.out.println("\n=======Content=========");
+		//System.out.println("\n" + content1.toString());
+		
+		//for (int i = 0; i < globalMapNext.size(); i++) {
+			String[] emailsKey = globalMapNextTesting.keySet().toArray(
+					new String[globalMapNextTesting.size()]);
+			for (int emailCount = 0; emailCount < emailsKey.length; emailCount++) {
+				System.out.println("|||" + emailsKey[emailCount] + "|||");
+				
+				List<HashMap<String, Word>> list = globalMapNextTesting.get(emailsKey[emailCount]);
+				for (HashMap<String, Word> hashmap : list) {
+					for (int attValCount = 0; attValCount < attributeValues.length; attValCount++) {
+						Word word = hashmap.get(attributeValues[attValCount]);
+						if (word != null) {
+
+							System.out.print(word.count+",");
+							content1.append(word.count).append(",");
+
+						} else {
+							System.out.print("0,");
+							content1.append("0");
+							content1.append(",");
+						}
+
+					}
+
+				}
+				System.out.print("0\n");
+				content1.append("0");
+				content1.append("\n");
+			}
+			
+
+		//}
+		 // 0 for SPAM, 1 for HAM
+		if (writeToArffFile(filePath, fileName, content1))
+			System.out
+					.println("========================Completed========================");
+		else
+			System.out.println("ERROR");
+
+	}
+
 
 	public static boolean writeToArffFile(String filePath, String fileName,
 			StringBuilder content) {
