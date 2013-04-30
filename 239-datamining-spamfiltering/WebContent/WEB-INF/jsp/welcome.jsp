@@ -15,11 +15,13 @@
 <body>
 	<table>
 		<tr>
-			<td><a href="genTrain.html">Generate Training File</a></td>
-			<td><a href="genTest.html">Generate Testing File</a></td>
+			<td><a href="genSpamTrain.html">Generate SPAM Training File</a></td>
+			<td><a href="genSpamTest.html">Generate SPAM Testing File</a></td>
 		</tr>
 		<tr>
-			<td></td>
+			<td><a href="genNonSpamTrain.html">Generate Non-SPAM Training File</a></td>
+			<td><a href="genNonSpamTest.html">Generate Non-SPAM Testing File</a></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<td></td>

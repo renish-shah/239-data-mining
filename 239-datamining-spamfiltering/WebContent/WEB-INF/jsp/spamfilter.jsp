@@ -16,15 +16,26 @@
 <body>
 	<table>
 		<tr>
-			<td><a href="svm.html">SVM SPAM</a></td>
-			<td><a href="svm">SVM Non-SPAM</a></td>
-			<td><a href="svm">SVM SPAM & NO SPAM</a></td>
+			<td><a href="svmSS.html">SVM Train> SPAM & Test> SPAM</a></td>
+			<td><a href="svmSN.html">SVM Train> SPAM & Test> NonSPAM</a></td>
 		</tr>
 		<tr>
-			<td><a href="knn.html">KNN</a></td>
+			<td><a href="svmNN.html">SVM Train> NonSPAM & Test> NonSPAM</a></td>
+			<td><a href="svmNS.html">SVM Train> NonSPAM & Test> SPAM</a></td>
 		</tr>
 		<tr>
-			<td>  </td>
+			<td><a href="knnSpam.html">KNN SPAM</a></td>
+			<td><a href="knnNonSpam.html">KNN NonSPAM</a></td>
+		</tr>
+		<tr>
+			<td><a href="naiveTestSpam.html">Naive Bayesian Test SPAM</a></td>
+		</tr>
+		<tr>
+			<td><a href="naiveTestNonSpam.html">Naive Bayesian Test
+					NON-SPAM</a></td>
+		</tr>
+		<tr>
+			<td></td>
 		</tr>
 		<c:forEach items="${message}" var="element" varStatus="count">
 			<tr>

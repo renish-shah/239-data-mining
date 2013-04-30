@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spamfilter.knn.KNNClassifier;
+import com.spamfilter.naivebayes.filter.NaiveBayes;
 import com.spamfilter.svm.SVMEngine;
 
 
@@ -29,27 +30,58 @@ public class SpamFilterController {
 		return "welcome";
 	}
 
-	@RequestMapping(value = "/svm", method = RequestMethod.GET)
-	public String showSVMResults(Model model) {
+	@RequestMapping(value = "/svmSS", method = RequestMethod.GET)
+	public String showSVMSSResults(Model model) {
 
-		model.addAttribute("message", svmEngine.runSVMEngine());
+		model.addAttribute("message", svmEngine.runSVMEngine(true, true));
+		return "spamfilter";
+	}
+	
+	@RequestMapping(value = "/svmNN", method = RequestMethod.GET)
+	public String showSVMNNResults(Model model) {
+
+		model.addAttribute("message", svmEngine.runSVMEngine(false, false));
+		return "spamfilter";
+	}
+	@RequestMapping(value = "/svmSN", method = RequestMethod.GET)
+	public String showSVMSNResults(Model model) {
+
+		model.addAttribute("message", svmEngine.runSVMEngine(true, false));
+		return "spamfilter";
+	}
+	@RequestMapping(value = "/svmNS", method = RequestMethod.GET)
+	public String showSVMNSResults(Model model) {
+
+		model.addAttribute("message", svmEngine.runSVMEngine(false, true));
 		return "spamfilter";
 	}
 
-	@RequestMapping(value = "/knn", method = RequestMethod.GET)
-	public String showKNNResults(Model model) {
+	
+
+	@RequestMapping(value = "/knnSpam", method = RequestMethod.GET)
+	public String showKNNSpamResults(Model model) {
 
 		KNNClassifier knnClassifier = new KNNClassifier();
-		model.addAttribute("message", knnClassifier.runKnn("", ""));
+		model.addAttribute("message", knnClassifier.runKnn("", "", true));
+
+		// model.addAttribute("message", "Spring 3 MVC Hello World");
+		return "spamfilter";
+	}
+	@RequestMapping(value = "/knnNonSpam", method = RequestMethod.GET)
+	public String showKNNnonSpamResults(Model model) {
+
+		KNNClassifier knnClassifier = new KNNClassifier();
+		model.addAttribute("message", knnClassifier.runKnn("", "", false));
 
 		// model.addAttribute("message", "Spring 3 MVC Hello World");
 		return "spamfilter";
 	}
 
-	@RequestMapping(value = "/genTrain", method = RequestMethod.GET)
-	public String generateTrainingFile(Model model) {
 
-		if (svmEngine.generateTrainingArffFile())
+	@RequestMapping(value = "/genSpamTrain", method = RequestMethod.GET)
+	public String generateSpamTrainingFile(Model model) {
+
+		if (svmEngine.generateTrainingArffFile(true))
 			model.addAttribute("message",
 					"Training File Generated Successfully!!!");
 		else
@@ -59,10 +91,35 @@ public class SpamFilterController {
 		return "welcome";
 	}
 
-	@RequestMapping(value = "/genTest", method = RequestMethod.GET)
-	public String generateTestingFile(Model model) {
+	@RequestMapping(value = "/genSpamTest", method = RequestMethod.GET)
+	public String generateSpamTestingFile(Model model) {
 
-		if (svmEngine.generateTestingArffFile())
+		if (svmEngine.generateTestingArffFile(true))
+			model.addAttribute("message",
+					"Testing File Generated Successfully!!!");
+		else
+			model.addAttribute("message", "Error in generating Testing File!!!");
+
+		return "welcome";
+	}
+	
+	@RequestMapping(value = "/genNonSpamTrain", method = RequestMethod.GET)
+	public String genNonSpamTrainingFile(Model model) {
+
+		if (svmEngine.generateTrainingArffFile(false))
+			model.addAttribute("message",
+					"Training File Generated Successfully!!!");
+		else
+			model.addAttribute("message",
+					"Error in generating Training File!!!");
+
+		return "welcome";
+	}
+
+	@RequestMapping(value = "/genNonSpamTest", method = RequestMethod.GET)
+	public String genNonSpamTestingFile(Model model) {
+
+		if (svmEngine.generateTestingArffFile(false))
 			model.addAttribute("message",
 					"Testing File Generated Successfully!!!");
 		else
@@ -71,6 +128,7 @@ public class SpamFilterController {
 		return "welcome";
 	}
 
+
 	@RequestMapping(value = "/spamfilter", method = RequestMethod.GET)
 	public String showSpamFilter(Model model) {
 
@@ -78,12 +136,20 @@ public class SpamFilterController {
 		return "spamfilter";
 	}
 
-	@RequestMapping(value = "/naive", method = RequestMethod.GET)
-	public String showNaiveBaysianResults() {
-
-		// model.addAttribute("message", "Spring 3 MVC Hello World");
+	@RequestMapping(value = "/naiveTestSpam", method = RequestMethod.GET)
+	public String showNBSpamResults(Model model) {
+		NaiveBayes naiveBayes=new NaiveBayes();
+		model.addAttribute("message", naiveBayes.checkNaiveBayes("spam"));
 		return "spamfilter";
 	}
+	
+	@RequestMapping(value = "/naiveTestNonSpam", method = RequestMethod.GET)
+	public String showNBNonSpamResults(Model model) {
+		NaiveBayes naiveBayes=new NaiveBayes();
+		model.addAttribute("message", naiveBayes.checkNaiveBayes("nonspam"));
+		return "spamfilter";
+	}
+
 
 	// @RequestMapping(value = "/image", method = RequestMethod.POST, headers =
 	// "Accept=application/xml, application/json")

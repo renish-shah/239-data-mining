@@ -32,7 +32,7 @@ public class ArffFileUtility {
 	// "C:\\Users\\renis\\Desktop\\SJSU\\239\\Project_SVM\\data\\";
 
 	public static boolean createContentForTrainingFile(String filePath,
-			String fileName) {
+			String fileName, boolean isSpam) {
 		StringBuilder content1 = new StringBuilder();
 		HashMap<String, List<HashMap<String, Word>>> globalMapNext = SVMEngine.globalMapNextTraining;
 		HashMap<String, String> globalHeader = SVMEngine.globalHeaderTraining;
@@ -87,18 +87,22 @@ public class ArffFileUtility {
 
 			}
 			// System.out.print("0\n");
-			content1.append("0");
+			// 0 for SPAM, 1 for HAM
+			if (isSpam)
+				content1.append("0");
+			else
+				content1.append("1");
 			content1.append("\n");
 		}
 
 		// }
-		// 0 for SPAM, 1 for HAM
+
 		return writeToArffFile(filePath, fileName, content1);
 
 	}
 
 	public static boolean createContentForTestingFile(String filePath,
-			String fileName) {
+			String fileName, boolean isSpam) {
 		StringBuilder content1 = new StringBuilder();
 		HashMap<String, List<HashMap<String, Word>>> globalMapNextTesting = SVMEngine.globalMapNextTesting;
 		HashMap<String, String> globalHeaderTraining = SVMEngine.globalHeaderTraining;
@@ -119,9 +123,9 @@ public class ArffFileUtility {
 		content1.append("\n\n@data");
 		content1.append("\n");
 
-//		writeToArffFile(filePath, fileName, content1);
-//		content1 = null;
-//		content1 = new StringBuilder();
+		// writeToArffFile(filePath, fileName, content1);
+		// content1 = null;
+		// content1 = new StringBuilder();
 
 		System.out.println("Done");
 
@@ -154,7 +158,10 @@ public class ArffFileUtility {
 
 			}
 			// System.out.print("0\n");
-			content1.append("0");
+			if (isSpam)
+				content1.append("0");
+			else
+				content1.append("1");
 			content1.append("\n");
 		}
 
