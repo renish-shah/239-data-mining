@@ -1,0 +1,27 @@
+
+use warnings ;
+use strict ;
+use File::Copy ;
+
+my $INDIR  = "C:/Users/Pranay/Dropbox/239 Datasets/ex6DataEmails/spam-train";
+my $COUNT  = "0";
+my $FILE ="";
+
+print "[Task started on " . scalar localtime . "]\n";
+chdir($INDIR);
+open (my $FH, '>>', "E:/bayesianspam/bayesianspam/spam.txt") or die "etc: $!";
+
+@ARGV = glob('*.txt');
+while (<>) {
+    print $FH $_;
+    $COUNT++;    
+}
+
+close ($FH);
+print "\n";
+print " Found $COUNT files with data to process \n";
+print " Reading all file data into memory \n";
+print "\n";
+print "[Task completed in "; print time - $^T . " seconds] \n" ;
+#END
+
