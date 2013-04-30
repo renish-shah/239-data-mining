@@ -26,10 +26,39 @@ public class WordFrequencyCounter {
 		// }
 	}
 
-	private void getFrequentWords(List<String> words) {
+	private List<List<String>> DimensionalArrayList(HashMap<String,Double> map)
+	{
+		
+		String keyArray[] = map.keySet().toArray(new String[map.size()]);
+		Double valueArray[] = map.values().toArray(new Double[map.size()]);
+		
+		List<List<String>> abc=new ArrayList<List<String>>();
+		
+		List<String> headers=new ArrayList<String>();
+		List<String> values=new ArrayList<String>();
+		for(int i=0;i<keyArray.length;i++)
+		{
+			headers.add(keyArray[i]);
+			values.add(valueArray[i].toString());
+		}
+		abc.add(headers);
+		abc.add(values);
+		
+		System.out.println("abc:"+abc.size());
+		return abc;
+		
+		
+		
+	}
+
+	private HashMap<String, Double> getFrequentWords(List<String> words) {
 		HashMap<String, Double> map = new HashMap<String, Double>();
 
-		int totalNoOfWords=words.size();
+		HashMap<String, map> hashMap=new HashMap<K, V>();
+		
+		List<String> headers=new ArrayList<String>();
+		
+		int totalNoOfWords = words.size();
 		for (String s : words) {
 
 			Double wordCount = 0.0;
@@ -41,43 +70,55 @@ public class WordFrequencyCounter {
 		}
 
 		String keyArray[] = map.keySet().toArray(new String[map.size()]);
+
+		System.out.println("===Map Size===:" + map.size());
 		System.out.println("\nKey=Value\n");
 		for (int i = 0; i < map.size(); i++) {
-			
-			System.out.println(""+keyArray[i]+"="+map.get(keyArray[i]));
-			map.put(keyArray[i], (map.get(keyArray[i])/totalNoOfWords)*100);
-		}
 
-		System.out.println("\nKey=Value with Percentage\n");
-		String keyArray1[] = map.keySet().toArray(new String[map.size()]);
-		for (int i = 0; i < map.size(); i++) {
-			System.out.println(""+keyArray1[i]+"="+map.get(keyArray1[i]));
-			
-			//map.put(keyArray[i], map.get(keyArray[i])/totalNoOfWords);
+			System.out.println("" + keyArray[i] + "=" + map.get(keyArray[i]));
+			map.put(keyArray[i], (map.get(keyArray[i]) / totalNoOfWords) * 100);
 		}
 		
-//		Word[] list = map.values().toArray(new Word[] {});
-//		Arrays.sort(list);
-//		return list;
+		DimensionalArrayList(map);
+		
+		
+		return map;
+
+//		System.out.println("\nKey=Value with Percentage\n");
+//		String keyArray1[] = map.keySet().toArray(new String[map.size()]);
+//		for (int i = 0; i < map.size(); i++) {
+//			System.out.println("" + keyArray1[i] + "=" + map.get(keyArray1[i]));
+//
+//			// map.put(keyArray[i], map.get(keyArray[i])/totalNoOfWords);
+//		}
+
+		// Word[] list = map.values().toArray(new Word[] {});
+		// Arrays.sort(list);
+		// return list;
 	}
 
-	public List<String> readFile(String path) {
+	public List<String> readFile(String path, int noOfFiles) {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(path));
-			String sCurrentLine;
 			List<String> listOfWords = new ArrayList<String>();
+			BufferedReader br;
 
-			while ((sCurrentLine = br.readLine()) != null) {
-				String[] arrayOfWords = sCurrentLine.split("\\s");
-				for (int i = 0; i < arrayOfWords.length; i++) {
-					listOfWords.add(arrayOfWords[i]);
+			for (int i = 1; i <= noOfFiles; i++) {
+
+				br = new BufferedReader(new FileReader(path + "spmsga" + i
+						+ ".txt"));
+				String sCurrentLine;
+
+				while ((sCurrentLine = br.readLine()) != null) {
+					String[] arrayOfWords = sCurrentLine.split("\\s");
+					for (int j = 0; j < arrayOfWords.length; j++) {
+						listOfWords.add(arrayOfWords[j]);
+					}
+					System.out.println(sCurrentLine);
 				}
-				System.out.println(sCurrentLine);
+
+				System.out.println("===Completed===");
+				System.out.println("Abc Size:" + listOfWords.size());
 			}
-
-			System.out.println("===Completed===");
-			System.out.println("Abc Size:" + listOfWords.size());
-
 			return listOfWords;
 
 		} catch (Exception e) {
@@ -90,15 +131,17 @@ public class WordFrequencyCounter {
 	public static void main(String[] args) {
 
 		WordFrequencyCounter frequencyCounter = new WordFrequencyCounter();
-		List<String> listOfWords = frequencyCounter
-				.readFile("C:\\Users\\renis\\Desktop\\SJSU\\239\\Project_SVM\\data\\spmsga11.txt");
+		List<String> listOfWords = frequencyCounter.readFile(
+				"C:\\Users\\renis\\Desktop\\SJSU\\239\\Project_SVM\\data\\", 1);
 
 		// String words[] = { "hello", "world", "java", "code", "example",
 		// "hello" };
-		new WordFrequencyCounter().getFrequentWords(listOfWords);
-//		for (Word w : frequency) {
-//			System.out.println(w.word + "=" + w.count);
-//		}
+		HashMap<String, Double> map=frequencyCounter.getFrequentWords(listOfWords);
+		frequencyCounter.DimensionalArrayList(map);
+		
+		// for (Word w : frequency) {
+		// System.out.println(w.word + "=" + w.count);
+		// }
 	}
 
 }
