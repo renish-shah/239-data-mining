@@ -1,4 +1,4 @@
-package wekaexamples.core.converters;
+package com.spamfilter.knn;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.lazy.IBk;
