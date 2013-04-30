@@ -1,4 +1,4 @@
-package com.spamfilter.util;
+package com.spamfilter.svm;
 
 import java.io.IOException;
 import java.util.*;
@@ -11,6 +11,11 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+/**
+ * @author RENISH
+ * 
+ */
 
 public class WordCount {
 

@@ -12,9 +12,10 @@ import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 /**
- * @author renis
+ * @author RENISH
  * 
  */
+
 public class TestSVM {
 
 	/**

@@ -1,4 +1,6 @@
-package com.spamfilter.util;
+package com.spamfilter.svm;
+
+
 
 import java.io.File;
 import java.text.DateFormat;
@@ -10,6 +12,13 @@ import java.util.List;
 
 import com.spamfilter.domain.Word;
 import com.spamfilter.test.SVMTest;
+import com.spamfilter.util.ArffFileUtility;
+import com.spamfilter.util.FileUtility;
+
+/**
+ * @author RENISH
+ * 
+ */
 
 public class SVMEngine {
 

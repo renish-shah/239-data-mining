@@ -1,5 +1,10 @@
 package com.spamfilter.domain;
 
+/**
+ * @author RENISH
+ * 
+ */
+
 public class Word implements Comparable<Word> {
 	public String word;
 	public Double count;

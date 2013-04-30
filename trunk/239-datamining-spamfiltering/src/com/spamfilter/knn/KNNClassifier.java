@@ -3,12 +3,12 @@ package com.spamfilter.knn;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.spamfilter.util.SVMEngine;
-
-import weka.core.Instances;
-import weka.core.converters.ConverterUtils.DataSource;
 import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
+
+import com.spamfilter.svm.SVMEngine;
 
 public class KNNClassifier {
 
