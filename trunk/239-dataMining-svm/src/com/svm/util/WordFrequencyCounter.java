@@ -54,7 +54,7 @@ public class WordFrequencyCounter {
 	private HashMap<String, Double> getFrequentWords(List<String> words) {
 		HashMap<String, Double> map = new HashMap<String, Double>();
 
-		HashMap<String, map> hashMap=new HashMap<K, V>();
+		//HashMap<String, map> hashMap=new HashMap<K, V>();
 		
 		List<String> headers=new ArrayList<String>();
 		

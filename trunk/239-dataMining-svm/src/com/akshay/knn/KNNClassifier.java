@@ -2,7 +2,7 @@ package com.akshay.knn;
 
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.classifiers.evaluation.Evaluation;
+import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
 public class KNNClassifier {
 
