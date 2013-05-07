@@ -68,6 +68,7 @@ public class KNNTest {
 
 		} catch (Exception e) {
 			System.out.println("Exception:" + e);
+			e.printStackTrace();
 		}
 
 	}
@@ -90,6 +91,7 @@ public class KNNTest {
 
 		} catch (Exception e) {
 			System.out.println("Exception :" + e);
+			e.printStackTrace();
 		}
 		return knn;
 	}

@@ -31,23 +31,29 @@ public class SVMEngine {
 	public static final String NONSPAM_TRAIN_DIRECTORY = "E:\\personal_dropbox\\Dropbox\\239\\239 Datasets\\ex6DataEmails\\nonspam-train";
 	public static final String NONSPAM_TEST_DIRECTORY = "E:\\personal_dropbox\\Dropbox\\239\\239 Datasets\\ex6DataEmails\\nonspam-test";
 	public static int fileCounter = 0;
+
+	public static boolean isTestYahoo = false;
+	public static final String SPAM_YAHOO_TRAIN_DIRECTORY = "E:/SpamEmails";
+	public static final String SPAM_YAHOO_TEST_DIRECTORY = "E:/SpamEmails-Test";
+
 	// HashMap<String, HashMap<String, List<Double>>> globalMap = new
 	// HashMap<String, HashMap<String, List<Double>>>();
 	// public static HashMap<String, HashMap<String, Word>> globalMapTraining =
 	// new HashMap<String, HashMap<String, Word>>();
-	public static HashMap<String, List<HashMap<String, Word>>> globalMapNextTraining=new HashMap<String, List<HashMap<String,Word>>>();
-	public static HashMap<String, String> globalHeaderTraining=new HashMap<String, String>();
+	public static HashMap<String, List<HashMap<String, Word>>> globalMapNextTraining = new HashMap<String, List<HashMap<String, Word>>>();
+	public static HashMap<String, String> globalHeaderTraining = new HashMap<String, String>();
 
-	public static HashMap<String, List<HashMap<String, Word>>> globalMapNextTesting=new HashMap<String, List<HashMap<String,Word>>>();
-	public static HashMap<String, String> globalHeaderTesting=new HashMap<String, String>();
+	public static HashMap<String, List<HashMap<String, Word>>> globalMapNextTesting = new HashMap<String, List<HashMap<String, Word>>>();
+	public static HashMap<String, String> globalHeaderTesting = new HashMap<String, String>();
 
 	private void getCountForNextEmail(List<String> words, String emailKey) {
 
 		HashMap<String, Word> mapOfLocalWords = new HashMap<String, Word>();
 		List<HashMap<String, Word>> listOfWordsWithCount = new ArrayList<HashMap<String, Word>>();
 		int totalNoOfWordsInEmail = words.size();
-//		globalHeaderTraining = new HashMap<String, String>();
-//		globalMapNextTraining = new HashMap<String, List<HashMap<String, Word>>>();
+		// globalHeaderTraining = new HashMap<String, String>();
+		// globalMapNextTraining = new HashMap<String, List<HashMap<String,
+		// Word>>>();
 
 		for (String stringKey : words) {
 
@@ -100,12 +106,13 @@ public class SVMEngine {
 		HashMap<String, Word> mapOfLocalWords = new HashMap<String, Word>();
 		List<HashMap<String, Word>> listOfWordsWithCount = new ArrayList<HashMap<String, Word>>();
 		int totalNoOfWordsInEmail = words.size();
-		//globalHeaderTesting = new HashMap<String, String>();
-		//globalMapNextTesting=new HashMap<String, List<HashMap<String,Word>>>();
+		// globalHeaderTesting = new HashMap<String, String>();
+		// globalMapNextTesting=new HashMap<String,
+		// List<HashMap<String,Word>>>();
 		for (String stringKey : words) {
 
 			// mapOfLocalWords = globalMap.get(stringKey);
-			
+
 			String headerValue = globalHeaderTesting.get(stringKey);
 			if (headerValue == null) {
 				globalHeaderTesting.put(stringKey, stringKey);
@@ -144,20 +151,55 @@ public class SVMEngine {
 				+ globalMapNextTesting.size());
 	}
 
+	public boolean generateYahooTrainingArffFile(boolean isSpam) {
+		fileCounter++;
+		File folder;
+
+		if (isSpam)
+			folder = new File(SPAM_YAHOO_TRAIN_DIRECTORY);
+		else
+			folder = new File(NONSPAM_TRAIN_DIRECTORY);
+
+		File[] listOfFiles = folder.listFiles();
+		globalHeaderTesting = null;
+		globalHeaderTraining = new HashMap<String, String>();
+		globalMapNextTraining = null;
+		globalMapNextTraining = new HashMap<String, List<HashMap<String, Word>>>();
+
+		for (int i = 0; i < listOfFiles.length; i++) {
+
+			List<String> listOfWords = FileUtility.readFilePreProcess("", i,
+					"txt", listOfFiles[i]);
+			getCountForNextEmail(listOfWords, "spmsga" + i);
+			listOfWords = null;
+		}
+		if (isSpam) {
+			return ArffFileUtility.createContentForTrainingFile(
+					PROJECT_SVM_DATA_DIRECTORY, TRAIN_SPAM_DATASET + "_YAHOO_"
+							+ fileCounter, true);
+		} else {
+			return ArffFileUtility.createContentForTrainingFile(
+					PROJECT_SVM_DATA_DIRECTORY, TRAIN_NONSPAM_DATASET
+							+ "_YAHOO_" + fileCounter, false);
+		}
+
+	}
+
 	public boolean generateTrainingArffFile(boolean isSpam) {
 		fileCounter++;
 		File folder;
+
 		if (isSpam)
 			folder = new File(SPAM_TRAIN_DIRECTORY);
 		else
 			folder = new File(NONSPAM_TRAIN_DIRECTORY);
 
 		File[] listOfFiles = folder.listFiles();
-		globalHeaderTesting=null;
-		globalHeaderTraining=new HashMap<String, String>();
-		globalMapNextTraining=null;
-		globalMapNextTraining=new HashMap<String, List<HashMap<String,Word>>>();
-		
+		globalHeaderTesting = null;
+		globalHeaderTraining = new HashMap<String, String>();
+		globalMapNextTraining = null;
+		globalMapNextTraining = new HashMap<String, List<HashMap<String, Word>>>();
+
 		for (int i = 0; i < listOfFiles.length; i++) {
 
 			List<String> listOfWords = FileUtility.readFile("", i, "txt",
@@ -177,6 +219,40 @@ public class SVMEngine {
 
 	}
 
+	public boolean generateYahooTestingArffFile(boolean isSpam) {
+
+		// Testing Phase
+		File folder;
+		if (isSpam)
+			folder = new File(SPAM_YAHOO_TEST_DIRECTORY);
+		else
+			folder = new File(NONSPAM_TEST_DIRECTORY);
+
+		File[] listOfFiles = null;
+		listOfFiles = folder.listFiles();
+		globalHeaderTesting = new HashMap<String, String>();
+		globalMapNextTesting = new HashMap<String, List<HashMap<String, Word>>>();
+
+		for (int i = 0; i < listOfFiles.length; i++) {
+
+			List<String> listOfWords = FileUtility.readFilePreProcess("", i,
+					"txt", listOfFiles[i]);
+			getCountForTestingEmail(listOfWords, listOfFiles[i].getName());
+			listOfWords = null;
+		}
+		if (isSpam) {
+
+			return ArffFileUtility.createContentForTestingFile(
+					PROJECT_SVM_DATA_DIRECTORY, TEST_SPAM_DATASET + "_YAHOO_"
+							+ fileCounter, true);
+		} else {
+			return ArffFileUtility.createContentForTestingFile(
+					PROJECT_SVM_DATA_DIRECTORY, TEST_NONSPAM_DATASET
+							+ "_YAHOO_" + fileCounter, false);
+		}
+
+	}
+
 	public boolean generateTestingArffFile(boolean isSpam) {
 		// fileCounter++;
 		// Testing Phase
@@ -188,9 +264,9 @@ public class SVMEngine {
 
 		File[] listOfFiles = null;
 		listOfFiles = folder.listFiles();
-		globalHeaderTesting=new HashMap<String, String>();
-		globalMapNextTesting=new HashMap<String, List<HashMap<String,Word>>>();
-		
+		globalHeaderTesting = new HashMap<String, String>();
+		globalMapNextTesting = new HashMap<String, List<HashMap<String, Word>>>();
+
 		for (int i = 0; i < listOfFiles.length; i++) {
 
 			List<String> listOfWords = FileUtility.readFile("", i, "txt",
@@ -209,6 +285,16 @@ public class SVMEngine {
 							+ fileCounter, false);
 		}
 
+	}
+
+	public List<String> runYahooSVMEngine(boolean trainSpam, boolean testSpam) {
+		SVMTest svmTest = new SVMTest();
+		return svmTest.testDataSet(
+				PROJECT_SVM_DATA_DIRECTORY + TEST_SPAM_DATASET + "_YAHOO_"
+						+ fileCounter + ".arff",
+				svmTest.trainDataSet(PROJECT_SVM_DATA_DIRECTORY
+						+ TRAIN_SPAM_DATASET + "_YAHOO_" + fileCounter
+						+ ".arff"));
 	}
 
 	public List<String> runSVMEngine(boolean trainSpam, boolean testSpam) {

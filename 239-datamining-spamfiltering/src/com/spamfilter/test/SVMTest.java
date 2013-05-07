@@ -46,6 +46,7 @@ public class SVMTest {
 			
 			Evaluation evaluation=new Evaluation(instances);
 			evaluation.evaluateModel(svm, instances);
+			
 			System.out.println(evaluation.toSummaryString());
 
 			values.add("=== RESULTS FOR SVM ===");
@@ -54,18 +55,19 @@ public class SVMTest {
 			values.add("Incorrectly Classified Instances:"+evaluation.incorrect());
 			values.add("Incorrectly Classified Instances(%):"+evaluation.pctIncorrect());
             values.add("Total Time taken to classify:"+(System.currentTimeMillis()-startTime)+" ms");
-			return values;
+//			return values;
 
-//			for (int i = 0; i < instances.numInstances(); i++) {
-//
+			for (int i = 0; i < instances.numInstances(); i++) {
+
 //				double classify = svm.classifyInstance(instances.instance(i));
-//				double eval=evaluation.evaluateModelOnce(svm, instances.instance(i));
-//				evaluation.
+				double eval=evaluation.evaluateModelOnce(svm, instances.instance(i));
+				
 //				System.out.println("Result using classifyInstance:" + classify);
 //				System.out.println("Result using evaluateModelOnce:" + eval);
-//				// System.out.println("\n\n" + instances);
-//
-//			}
+				System.out.println(i +":"+ instances.classAttribute().value((int)eval));
+				// System.out.println("\n\n" + instances);
+
+			}
 			// Instance firstInstance = instances.firstInstance();
 
 			// Instance lastInstance = instances.lastInstance();
@@ -73,7 +75,8 @@ public class SVMTest {
 			// System.out.println("Result:" + d1);
 
 		} catch (Exception e) {
-			System.out.println("Exception:" + e);
+			System.out.println("Exception in testDataSet:" + e);
+			e.printStackTrace();
 		}
 		return values;
 
@@ -88,7 +91,7 @@ public class SVMTest {
 			Instances instances = arffLoader.getDataSet();
 			instances.setClassIndex(instances.numAttributes() - 1);
 
-			// System.out.println("\n\n" + instances);
+			System.out.println("\n\n Number of instances" + instances.numInstances());
 
 			svm = new LibSVM();
 			svm.buildClassifier(instances);
@@ -97,6 +100,7 @@ public class SVMTest {
 
 		} catch (Exception e) {
 			System.out.println("Exception :" + e);
+			e.printStackTrace();
 		}
 		return svm;
 	}

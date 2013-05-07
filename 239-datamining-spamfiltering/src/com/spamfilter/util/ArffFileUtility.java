@@ -89,9 +89,9 @@ public class ArffFileUtility {
 			// System.out.print("0\n");
 			// 0 for SPAM, 1 for HAM
 			if (isSpam)
-				content1.append("0");
-			else
 				content1.append("1");
+			else
+				content1.append("0");
 			content1.append("\n");
 		}
 
@@ -106,7 +106,7 @@ public class ArffFileUtility {
 		StringBuilder content1 = new StringBuilder();
 		HashMap<String, List<HashMap<String, Word>>> globalMapNextTesting = SVMEngine.globalMapNextTesting;
 		HashMap<String, String> globalHeaderTraining = SVMEngine.globalHeaderTraining;
-		HashMap<String, String> globalHeaderTesting = SVMEngine.globalHeaderTesting;
+		//HashMap<String, String> globalHeaderTesting = SVMEngine.globalHeaderTesting;
 		// globalMap.
 
 		content1.append("@relation svm_testing");
@@ -159,9 +159,9 @@ public class ArffFileUtility {
 			}
 			// System.out.print("0\n");
 			if (isSpam)
-				content1.append("0");
-			else
 				content1.append("1");
+			else
+				content1.append("0");
 			content1.append("\n");
 		}
 
@@ -205,6 +205,7 @@ public class ArffFileUtility {
 		} catch (Exception e) {
 
 			System.out.println("Exception :" + e);
+			e.printStackTrace();
 			return false;
 		}
 

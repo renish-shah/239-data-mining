@@ -75,7 +75,7 @@ public class KNNClassifier {
 			return values;
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.out.println("Exception in runKnn :"+e);
 			e.printStackTrace();
 		}
 		return null;
