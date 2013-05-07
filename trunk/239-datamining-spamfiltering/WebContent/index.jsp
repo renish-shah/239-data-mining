@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- Hi.......All -->
-<a href="welcome.html">Say Hello</a>
+<a href="welcome.html">Go to SPAM FILTER !!!!</a>
 
 </body>
 </html>

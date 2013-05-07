@@ -44,6 +44,7 @@ public class TestSVM {
 			System.out.println("\n\nFiltered data:\n\n" + dataFiltered);
 		} catch (Exception e) {
 			System.out.println("Exception :" + e);
+			e.printStackTrace();
 		}
 
 	}

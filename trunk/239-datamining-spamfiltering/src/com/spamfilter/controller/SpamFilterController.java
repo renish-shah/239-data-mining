@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.spamfilter.knn.KNNClassifier;
 import com.spamfilter.naivebayes.filter.NaiveBayes;
 import com.spamfilter.svm.SVMEngine;
-
+import com.spamfilter.util.FileUtility;
 
 /**
  * @author RENISH
@@ -25,7 +25,7 @@ public class SpamFilterController {
 
 	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
 	public String showWelcome() {
-
+		//new FileUtility().removeStopWords(null);
 		// model.addAttribute("message", "Spring 3 MVC Hello World");
 		return "welcome";
 	}
@@ -37,26 +37,34 @@ public class SpamFilterController {
 		return "spamfilter";
 	}
 	
+	@RequestMapping(value = "/yahooSS", method = RequestMethod.GET)
+	public String showYahooSSResults(Model model) {
+
+		model.addAttribute("message", svmEngine.runYahooSVMEngine(true, true));
+		return "spamfilter";
+	}
+
+
 	@RequestMapping(value = "/svmNN", method = RequestMethod.GET)
 	public String showSVMNNResults(Model model) {
 
 		model.addAttribute("message", svmEngine.runSVMEngine(false, false));
 		return "spamfilter";
 	}
+
 	@RequestMapping(value = "/svmSN", method = RequestMethod.GET)
 	public String showSVMSNResults(Model model) {
 
 		model.addAttribute("message", svmEngine.runSVMEngine(true, false));
 		return "spamfilter";
 	}
+
 	@RequestMapping(value = "/svmNS", method = RequestMethod.GET)
 	public String showSVMNSResults(Model model) {
 
 		model.addAttribute("message", svmEngine.runSVMEngine(false, true));
 		return "spamfilter";
 	}
-
-	
 
 	@RequestMapping(value = "/knnSpam", method = RequestMethod.GET)
 	public String showKNNSpamResults(Model model) {
@@ -67,6 +75,7 @@ public class SpamFilterController {
 		// model.addAttribute("message", "Spring 3 MVC Hello World");
 		return "spamfilter";
 	}
+
 	@RequestMapping(value = "/knnNonSpam", method = RequestMethod.GET)
 	public String showKNNnonSpamResults(Model model) {
 
@@ -76,7 +85,6 @@ public class SpamFilterController {
 		// model.addAttribute("message", "Spring 3 MVC Hello World");
 		return "spamfilter";
 	}
-
 
 	@RequestMapping(value = "/genSpamTrain", method = RequestMethod.GET)
 	public String generateSpamTrainingFile(Model model) {
@@ -90,6 +98,33 @@ public class SpamFilterController {
 
 		return "welcome";
 	}
+	
+	@RequestMapping(value = "/genYahooSpamTrain", method = RequestMethod.GET)
+	public String generateYahooSpamTrainingFile(Model model) {
+
+		if (svmEngine.generateYahooTrainingArffFile(true))
+			model.addAttribute("message",
+					"Yahoo Training File Generated Successfully!!!");
+		else
+			model.addAttribute("message",
+					"Error in generating Training File!!!");
+
+		return "welcome";
+	}
+
+	@RequestMapping(value = "/genYahooSpamTest", method = RequestMethod.GET)
+	public String generateYahooSpamTestFile(Model model) {
+
+		if (svmEngine.generateYahooTestingArffFile(true))
+			model.addAttribute("message",
+					"Yahoo Test File Generated Successfully!!!");
+		else
+			model.addAttribute("message",
+					"Error in generating Training File!!!");
+
+		return "welcome";
+	}
+
 
 	@RequestMapping(value = "/genSpamTest", method = RequestMethod.GET)
 	public String generateSpamTestingFile(Model model) {
@@ -102,7 +137,7 @@ public class SpamFilterController {
 
 		return "welcome";
 	}
-	
+
 	@RequestMapping(value = "/genNonSpamTrain", method = RequestMethod.GET)
 	public String genNonSpamTrainingFile(Model model) {
 
@@ -128,7 +163,6 @@ public class SpamFilterController {
 		return "welcome";
 	}
 
-
 	@RequestMapping(value = "/spamfilter", method = RequestMethod.GET)
 	public String showSpamFilter(Model model) {
 
@@ -138,69 +172,16 @@ public class SpamFilterController {
 
 	@RequestMapping(value = "/naiveTestSpam", method = RequestMethod.GET)
 	public String showNBSpamResults(Model model) {
-		NaiveBayes naiveBayes=new NaiveBayes();
+		NaiveBayes naiveBayes = new NaiveBayes();
 		model.addAttribute("message", naiveBayes.checkNaiveBayes("spam"));
 		return "spamfilter";
 	}
-	
+
 	@RequestMapping(value = "/naiveTestNonSpam", method = RequestMethod.GET)
 	public String showNBNonSpamResults(Model model) {
-		NaiveBayes naiveBayes=new NaiveBayes();
+		NaiveBayes naiveBayes = new NaiveBayes();
 		model.addAttribute("message", naiveBayes.checkNaiveBayes("nonspam"));
 		return "spamfilter";
 	}
-
-
-	// @RequestMapping(value = "/image", method = RequestMethod.POST, headers =
-	// "Accept=application/xml, application/json")
-	// public @ResponseBody
-	// String receiveImageData(@RequestBody String imageData) {
-	// logger.debug("Provider has received request to receive new ImageData");
-	// // System.out.println("==="+encodedImage+"===");
-	//
-	// // String imagePath="E:\\personal\\sampleProductPick.jpg";
-	// ImageDecode decode = new ImageDecode();
-	// String imagePath=decode.decodeStringToImage(imageData);
-	// System.out.println("Image Path in receiveImageData:"+imagePath);
-	// if(phase_1.isCharacterInWindow(imagePath))
-	// {
-	// System.out.println(phase_1.getDataInImage());
-	// return phase_1.getDataInImage();
-	// }
-	// else {
-	//
-	// System.out.println(phase_1.getDataInImage());
-	// return "failure";
-	// }
-	// // decode.decodeStringToImage(imagePath);
-	//
-	// // Call service to here
-	//
-	// }
-	//
-	// @RequestMapping(value = "/persons", method = RequestMethod.GET, headers =
-	// "Accept=application/xml, application/json")
-	// public @ResponseBody
-	// PersonList getPerson() {
-	// logger.debug("Provider has received request to get all persons");
-	// // Call service here
-	// // personService=new PersonService();
-	// // phase_1 = new Phase_1();
-	// // phase_1.initializeSVMClassifier();
-	// //phase_1.isCharacterInWindow();
-	//
-	// // phase_1.probableRegion();
-	//
-	// String dataObtained = phase_1.getDataInImage();
-	//
-	// System.out.println("\nCharacters extracted: "
-	// + dataObtained.substring(0, dataObtained.length()-1) + ".");
-	//
-	// PersonList result = new PersonList();
-	// result.setData(personService.getAll());
-	//
-	// return result;
-	// // return personService.getAll();
-	// }
 
 }

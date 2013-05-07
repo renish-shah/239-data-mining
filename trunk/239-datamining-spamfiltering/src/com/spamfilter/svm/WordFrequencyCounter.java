@@ -128,6 +128,7 @@ public class WordFrequencyCounter {
 
 		} catch (Exception e) {
 			System.out.println("Excpetion :" + e);
+			e.printStackTrace();
 		}
 		return null;
 

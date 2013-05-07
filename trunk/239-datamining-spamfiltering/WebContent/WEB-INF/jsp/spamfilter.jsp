@@ -15,6 +15,10 @@
 </head>
 <body>
 	<table>
+
+		<tr>
+			<td><a href="yahooSS.html">Yahoo SPAM > SPAM</a></td>
+		</tr>
 		<tr>
 			<td><a href="svmSS.html">SVM Train> SPAM & Test> SPAM</a></td>
 			<td><a href="svmSN.html">SVM Train> SPAM & Test> NonSPAM</a></td>
