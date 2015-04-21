@@ -1,0 +1,3 @@
+svm
+knn
+naive-baysian
